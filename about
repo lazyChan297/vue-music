@@ -1,0 +1,54 @@
+fastclick
+在移动端浏览器click事件的时候会有300ms的延迟,当双击屏幕的时候会触发浏览器页面放大的效果。fastclick则可以用来解决这个延迟的问题。
+在main.js中引入并调用
+import fastclick from 'fastclick'
+fastclick.attach(document.body)
+
+图片懒加载vue-lazyload
+当一个页面请求的图片很多时,只有滑动到图片位置才会请求它的src,请求成功前可以设置一张默认图片代替
+在main.js中引入并调用
+import VueLazyLoad from 'vue-lazyload'
+Vue.use(VueLazyLoad, {
+  loading: require('加载过程中静态图的url')
+})
+
+banner 引用了better-scroll插件
+this.slider = new BScroll(this.$refs.slider, {
+  scrollX: true,
+  scrollY: false,
+  momentnum: false,
+  // 轮播图时需要设置snap对象
+  snap: {
+    loop: this.loop,
+    threshold: 0.5
+  }
+})
+
+请求数据 跨域jsonp
+因为会有多个跨域请求，所以写一个公共的jsonp.js
+import originJSONP from 'jsonp'
+jsonp接收三个参数 1url 2options(回调的函数名，超时时间等等, 回调函数)
+ps:jsonp的回调函数里返回了错误信息和数据
+
+function jsonp (url, data, options) {
+  // url只能访问get请求 为了方便调用和拼接url 将跨域请求的参数作为data传入 再用param处理。最后得到的url为 www.xxx.com?key1=val1&key2=val2
+  url += (url.indexOf('?') < 1 ? '?' : '&') + param(data)
+  new Promise((resolve, reject) => {
+    originJSONP(url, options, (err, data) => {
+      if (!err) {
+        resolve(data)
+      } else {
+        reject(err)
+      }
+    })
+  })
+}
+
+function param(data) {
+  let url = ''
+  for (let k in data) {
+    let value = data[k] !== undefined ? data[k] : ''
+    url += `&${k}=${encodeURIComponent(value)}`
+  }
+  return url ? url.substring(1) : ''
+}
