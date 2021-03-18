@@ -187,12 +187,14 @@ export default {
       height:30px
       font-size:12px
       line-height:30px
-      color:$color-text-l
-      background:#333
+      color:rgba(26,26,26,.5)
+      background: $color-background
       padding-left:12px
     .list-group-item
       padding:20px 20px 0
       box-sizing: border-box
+      .name
+        color:rgba(26,26,26,.5)
     .avatar
       display:inline-block
       height:50px
@@ -212,9 +214,11 @@ export default {
       text-align: center
       color:$color-text-l
       font-size:12px
+      color:$color-text-l
       .list-shortcut-item
         height:16px
         line-height: 16px
+        color:$color-text
         &.active
           color:$color-theme
     .fixed-title
@@ -225,8 +229,8 @@ export default {
       height: 30px
       font-size: 12px
       line-height: 30px
-      color: rgba(255,255,255,0.5)
-      background: #333
+      color: rgba(26,26,26,0.9)
+      background: #ffffff
     .loading
       position: absolute
       top: 50%

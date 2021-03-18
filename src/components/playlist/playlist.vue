@@ -156,7 +156,7 @@ export default {
     left: 0
     bottom: 0
     width: 100%
-    background-color: $color-highlight-background
+    background-color: #fff
     .list-header
       position: relative
       padding: 20px 30px 10px 20px
@@ -170,7 +170,7 @@ export default {
         .text
           flex: 1
           font-size: $font-size-medium
-          color: $color-text-l
+          color: $color-text
         .clear
           extend-click()
           .icon-clear
@@ -198,7 +198,7 @@ export default {
           flex: 1
           no-wrap()
           font-size: $font-size-medium
-          color: $color-text-d
+          color: $color-text
         .like
           extend-click()
           margin-right: 15px
@@ -219,16 +219,17 @@ export default {
         padding: 8px 16px
         border: 1px solid $color-text-l
         border-radius: 100px
-        color: $color-text-l
+        color: $color-text
         .icon-add
           margin-right: 5px
           font-size: $font-size-small-s
         .text
           font-size: $font-size-small
+          color: $color-text
     .list-close
       text-align: center
       line-height: 50px
       background: $color-background
       font-size: $font-size-medium-x
-      color: $color-text-l
+      color: $color-text
 </style>

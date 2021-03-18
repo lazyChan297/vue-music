@@ -1,11 +1,11 @@
-import {commonParams, ERR_OK} from '@/api/config'
+import {commonParams, ERR_OK, prodUrl} from '@/api/config'
 import { getUid } from '@/common/js/uid'
 import axios from 'axios'
 
 const debug = process.env.NODE_ENV !== 'production'
-
+// 获取音源url
 export function getSongsUrl(songs) {
-  const url = debug ? '/api/getPurlUrl' : 'http://ustbhuangyi.com/music/api/getPurlUrl'
+  const url = debug ? '/api/getPurlUrl' : `${prodUrl}/music/api/getPurlUrl`
 
   let mids = []
   let types = []
@@ -28,19 +28,23 @@ export function getSongsUrl(songs) {
   return new Promise((resolve, reject) => {
     // 允许重新请求的次数
     let tryTime = 3
-
     function request() {
       return axios.post(url, {
         comm: data,
-        url_mid: urlMid
+        req_0: urlMid
       }).then((response) => {
         const res = response.data
         if (res.code === ERR_OK) {
-          let urlMid = res.url_mid
+          let urlMid = res.req_0
           if (urlMid && urlMid.code === ERR_OK) {
-            const info = urlMid.data.midurlinfo[0]
-            if (info && info.purl) {
-              resolve(res)
+            const purlMap = {}
+            urlMid.data.midurlinfo.forEach((item) => {
+              if (item.purl) {
+                purlMap[item.songmid] = item.purl
+              }
+            })
+            if (Object.keys(purlMap).length > 0) {
+              resolve(purlMap)
             } else {
               retry()
             }
@@ -65,7 +69,7 @@ export function getSongsUrl(songs) {
 }
 // 抓取歌词
 export function getLyric(mid) {
-  const url = debug ? '/api/lyric' : 'http://ustbhuangyi.com/music/api/lyric'
+  const url = debug ? '/api/lyric' : `${prodUrl}/music/api/lyric`
   const data = Object.assign({}, commonParams, {
     songmid: mid,
     pcachetime: +new Date(),

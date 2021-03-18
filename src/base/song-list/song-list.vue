@@ -72,6 +72,8 @@ export default {
           text-overflow: ellipsis
           white-space: nowrap
           overflow: hidden
+          color: $color-text
+          font-weight: bold
       .desc
         color:$color-text-l
         color: rgba(255,255,255,0.5)
@@ -95,6 +97,6 @@ export default {
           &.icon2
             bg-image('third')
         .text
-          color: $color-theme
+          color: $color-text
           font-size: $font-size-large
 </style>

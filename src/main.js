@@ -1,12 +1,12 @@
 import 'babel-polyfill'
 import Vue from 'vue'
+import 'common/stylus/index.styl'
+
 import App from './App'
 import router from './router'
 import fastclick from 'fastclick'
 import VueLazyLoad from 'vue-lazyload'
 import store from './store'
-
-import 'common/stylus/index.styl'
 
 fastclick.attach(document.body)
 

@@ -16,7 +16,7 @@ export default {
   .tab
     display: flex
     position: fixed
-    background: #222
+    background: #ffffff
     width: 100%
     top:44px
     height: 44px
@@ -24,8 +24,10 @@ export default {
     .tab-item
       flex: 1
       text-align: center
+      span
+        color #31c27c
       &.router-link-active
         span
-          color: #ffcd32
-          border-bottom: 2px solid #ffcd32
+          color: #31c27c
+          border-bottom: 2px solid #31c27c
 </style>

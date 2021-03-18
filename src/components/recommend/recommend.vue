@@ -68,6 +68,7 @@ export default {
     _getRecommend() {
       getRecommend().then((res) => {
         if (res.code === ERR_OK) {
+          console.log(res.data)
           this.sliderList = res.data.slider
         }
       })
@@ -115,7 +116,7 @@ export default {
       height:100%
       overflow:hidden
     .list-title
-      color:#ffcd32
+      color: #31c27c
       height: 65px
       line-height: 65px
       text-align: center
@@ -129,7 +130,7 @@ export default {
           .discList-item-name
             margin-bottom: 10px
           .discList-item-dissname
-            color: hsla(0,0%,100%,.3)
+            color: #666666
     .loading-container
       position: fixed
       top: 50%

@@ -9,6 +9,45 @@ var app = express()
 
 var apiRoutes = express.Router()
 
+app.get('/api/getTopBanner', function (req, res) {
+  const url = 'https://u.y.qq.com/cgi-bin/musicu.fcg'
+  const jumpPrefix = 'https://y.qq.com/n/yqq/album/'
+
+  axios.get(url, {
+    headers: {
+      referer: 'https://u.y.qq.com/',
+      host: 'u.y.qq.com'
+    },
+    params: req.query
+  }).then((response) => {
+    response = response.data
+    if (response.code === 0) {
+      const slider = []
+      const content = response.focus.data && response.focus.data.content
+      if (content) {
+        for (let i = 0; i < content.length; i++) {
+          const item = content[i]
+          const sliderItem = {}
+          sliderItem.id = item.id
+          sliderItem.linkUrl = jumpPrefix + item.jump_info.url + '.html'
+          sliderItem.picUrl = item.pic_info.url
+          slider.push(sliderItem)
+        }
+      }
+      res.json({
+        code: 0,
+        data: {
+          slider
+        }
+      })
+    } else {
+      res.json(response)
+    }
+  }).catch((e) => {
+    console.log(e)
+  })
+})
+
 apiRoutes.get('/getDiscList', function(req, res) {
   var url = 'https://c.y.qq.com/splcloud/fcgi-bin/fcg_get_diss_by_tag.fcg'
   axios.get(url, {
@@ -33,6 +72,8 @@ app.post('/api/getPurlUrl', bodyParser.json(), function (req, res) {
       'Content-type': 'application/x-www-form-urlencoded'
     }
   }).then((response) => {
+    console.log('success')
+    console.log(response.data)
     res.json(response.data)
   }).catch((e) => {
     console.log(e)
@@ -109,5 +150,5 @@ module.exports = app.listen(port, function (err) {
     console.log(err)
     return
   }
-  console.log('Listening at http://localhost:' + port + '\n')
+  console.log('Listening at http://127.0.0.1:' + port + '\n')
 })

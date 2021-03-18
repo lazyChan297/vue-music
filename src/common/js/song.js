@@ -13,7 +13,7 @@ export default class Song {
     this.image = image
     this.url = url
   }
-
+  // 获取歌词 把base
   getLyric() {
     // 如果歌词存在,不再请求
     if (this.lyric) {
@@ -22,15 +22,18 @@ export default class Song {
     return new Promise((resolve, reject) => {
       getLyric(this.mid).then((res) => {
         if (res.retcode === ERR_OK) {
+          // [hh:mm:ss] txt
           this.lyric = Base64.decode(res.lyric)
           resolve(this.lyric)
         } else {
+          // 歌词不存在
           reject(new Error('no lyric'))
         }
       })
     })
   }
 }
+// 创建歌曲实例
 export function createSong(musicData) {
   return new Song({
     id: musicData.songid,
@@ -50,7 +53,7 @@ function filterSinger(singer) {
   if (!singer) {
     return
   }
-  singer.forEach((item, index) => {
+  singer.forEach((item) => {
     ret.push(item.name)
   })
   // 最后返回string 如果有多个歌手用/分割
@@ -67,14 +70,15 @@ export function processSongsUrl(songs) {
   if (!songs.length) {
     return Promise.resolve(songs)
   }
-  return getSongsUrl(songs).then((res) => {
-    if (res.code === ERR_OK) {
-      let midUrlInfo = res.url_mid.data.midurlinfo
-      midUrlInfo.forEach((info, index) => {
-        let song = songs[index]
-        song.url = `http://dl.stream.qqmusic.qq.com/${info.purl}`
-      })
-    }
+  return getSongsUrl(songs).then((purlMap) => {
+    songs = songs.filter((song) => {
+      const purl = purlMap[song.mid]
+      if (purl) {
+        song.url = purl.indexOf('http') === -1 ? `http://dl.stream.qqmusic.qq.com/${purl}` : purl
+        return true
+      }
+      return false
+    })
     return songs
   })
 }

@@ -53,22 +53,23 @@ export default {
   width: 100%
   padding: 0 6px
   height: 40px
-  background: $color-highlight-background
   border-radius: 6px
+  background: #dedede
   .icon-search
     font-size: 24px
-    color: $color-background
+    color: $color-text
   .box
     flex: 1
     margin: 0 5px
     line-height: 18px
-    background: $color-highlight-background
     color: $color-text
     font-size: $font-size-medium
+    background: #dedede
     outline: 0
     height: 100%
+    color: $color-text
     &::placeholder
-      color: $color-text-d
+      color: $color-text
   .icon-dismiss
     font-size: 16px
     color: $color-background

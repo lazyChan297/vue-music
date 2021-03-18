@@ -8,12 +8,12 @@ const axios = require('axios')
 const baseWebpackConfig = require('./webpack.base.conf')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
 const portfinder = require('portfinder')
 const bodyParser = require('body-parser')
 
-// const HOST = process.env.HOST
-const HOST = '192.168.1.102'
+const HOST = process.env.HOST
 const PORT = process.env.PORT && Number(process.env.PORT)
 
 var express = require('express')
@@ -54,6 +54,46 @@ const devWebpackConfig = merge(baseWebpackConfig, {
       poll: config.dev.poll,
     },
     before (app) {
+      // 获取banner
+      app.get('/api/getTopBanner', function (req, res) {
+        const url = 'https://u.y.qq.com/cgi-bin/musicu.fcg'
+        const jumpPrefix = 'https://y.qq.com/n/yqq/album/'
+      
+        axios.get(url, {
+          headers: {
+            referer: 'https://u.y.qq.com/',
+            host: 'u.y.qq.com'
+          },
+          params: req.query
+        }).then((response) => {
+          response = response.data
+          if (response.code === 0) {
+            const slider = []
+            const content = response.focus.data && response.focus.data.content
+            if (content) {
+              for (let i = 0; i < content.length; i++) {
+                const item = content[i]
+                const sliderItem = {}
+                sliderItem.id = item.id
+                sliderItem.linkUrl = jumpPrefix + item.jump_info.url + '.html'
+                sliderItem.picUrl = item.pic_info.url
+                slider.push(sliderItem)
+              }
+            }
+            res.json({
+              code: 0,
+              data: {
+                slider
+              }
+            })
+          } else {
+            res.json(response)
+          }
+        }).catch((e) => {
+          console.log(e)
+        })
+      })
+      // 获取专辑列表
       app.get('/api/getDiscList', function(req, res) {
         var url = 'https://c.y.qq.com/splcloud/fcgi-bin/fcg_get_diss_by_tag.fcg'
         axios.get(url, {
@@ -147,6 +187,10 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     }
   },
   plugins: [
+    new ExtractTextPlugin({
+      filename: utils.assetsPath('css/[name].[contenthash].css'),
+      allChunks: false,
+    }),
     new webpack.DefinePlugin({
       'process.env': require('../config/dev.env')
     }),
@@ -157,6 +201,7 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     new HtmlWebpackPlugin({
       filename: 'index.html',
       template: 'index.html',
+      favicon: 'src/assets/favicon.ico',
       inject: true
     }),
     // copy custom static assets

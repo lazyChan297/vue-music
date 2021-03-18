@@ -57,6 +57,9 @@ export default {
           this._genResult(res.data).then((result) => {
             this.result = result
             this._checkMore(res.data)
+            setTimeout(() => {
+              this._checkMore(res.data)
+            }, 20)
           })
         }
       })
@@ -77,8 +80,12 @@ export default {
     },
     _checkMore(data) {
       const song = data.song
-      if (!song.list.length || (song.curnum + song.curpage * PERPAGE) > song.totalnum) {
+      if (!song.list.length || (song.curnum + (song.curpage) - 1 * PERPAGE) >= song.totalnum) {
         this.hasMore = false
+      } else {
+        if (!this.$refs.suggest.scroll.hasVerticalScroll) {
+          this.searchMore()
+        }
       }
     },
     listenScroll() {
@@ -175,11 +182,11 @@ export default {
       width: 30px
       [class^="icon-"]
         font-size: 14px
-        color: $color-text-d
+        color: $color-text
     .name
       flex: 1
       font-size: $font-size-medium
-      color: $color-text-d
+      color: $color-text
       overflow: hidden
       .text
         no-wrap()

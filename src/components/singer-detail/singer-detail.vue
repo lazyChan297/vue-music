@@ -10,10 +10,10 @@
 </template>
 
 <script>
-import {mapGetters} from 'vuex'
-import {getSingerDetail} from '@/api/singer'
-import {ERR_OK} from '@/api/config'
-import {createSong, processSongsUrl} from '@/common/js/song'
+import { mapGetters } from 'vuex'
+import { getSingerDetail } from '@/api/singer'
+import { ERR_OK } from '@/api/config'
+import { createSong, processSongsUrl } from '@/common/js/song'
 import MusicList from '../music-list/music-list'
 export default {
   data() {
@@ -28,6 +28,7 @@ export default {
   },
   created() {
     setTimeout(() => {
+      // 根据歌手id获取ta的歌曲列表
       this._getSingerDetail(this.singer.id)
     }, 20)
   },
@@ -35,6 +36,7 @@ export default {
     MusicList: MusicList
   },
   methods: {
+    // 获取歌手的歌曲列表
     _getSingerDetail(id) {
       if (!this.singer.id) {
         // 防止刷新了当前页 state.singer 为空请求不到数据
@@ -49,6 +51,7 @@ export default {
         }
       })
     },
+    // 实例化歌手的列表歌曲 拥有{lyric, mid,singer,album,durations,id,mid,name}属性
     _nomalizeSongs(list) {
       let ret = []
       list.forEach((item, index) => {

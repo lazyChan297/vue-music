@@ -128,15 +128,15 @@ export default {
         .title
           margin-bottom: 20px
           font-size: $font-size-medium
-          color: $color-text-l
+          color: $color-text
         .item
           display: inline-block
           padding: 5px 10px
           margin: 0 20px 10px 0
           border-radius: 6px
-          background: $color-highlight-background
+          background: rgba(25,25,25,.1)
           font-size: $font-size-medium
-          color: $color-text-d
+          color: $color-text
     .search-history
         position: relative
         margin: 0 20px

@@ -1,5 +1,5 @@
 import jsonp from '../common/js/jsonp'
-import {commonParams, options} from './config'
+import {commonParams, options, prodUrl} from './config'
 import axios from 'axios'
 
 const debug = process.env.NODE_ENV !== 'production'
@@ -15,7 +15,7 @@ export function getHotKey() {
 }
 
 export function search(query, page, zhida, perpage) {
-  const url = debug ? '/api/search' : 'http://ustbhuangyi.com/music/api/search'
+  const url = debug ? '/api/search' : `${prodUrl}/music/api/search`
 
   const data = Object.assign({}, commonParams, {
     w: query,
@@ -38,6 +38,7 @@ export function search(query, page, zhida, perpage) {
   return axios.get(url, {
     params: data
   }).then((res) => {
+    console.log(res)
     return Promise.resolve(res.data)
   })
 }

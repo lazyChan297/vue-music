@@ -262,14 +262,17 @@ export default {
       if (!this.songReady) {
         return
       }
+      // 列表只有一首歌曲，继续播放当前
       if (this.playlist.length === 1) {
         this.loop()
       } else {
         let index = this.currentIndex - 1
+        // 当前是第一首歌曲则切换到列表最后一首歌曲
         if (index === 0) {
           index = this.playlist.length - 1
         }
         this.setCurrentIndex(index)
+        // 当前是暂停状态,则修改playing=true
         if (!this.playing) {
           this.togglePlaying()
         }
@@ -282,23 +285,28 @@ export default {
       if (!this.songReady) {
         return
       }
+      // 列表只有一首歌曲，继续播放当前
       if (this.playlist.length === 1) {
         this.loop()
       }
       let index = this.currentIndex + 1
+      // 当前是最后一首歌曲，则播放列表第一首
       if (index === this.playlist.length) {
         index = 0
       }
       this.setCurrentIndex(index)
+      // 当前是暂停状态,则修改playing=true
       if (!this.playing) {
         this.togglePlaying()
       }
       // 播放后将songReady重新设为false
       this.songReady = false
     },
+    // 歌曲开始播放
     ready() {
       // 当切换歌曲 or 开始播放歌曲时会触发
       this.songReady = true
+      // 添加到历史播放列表
       this.savePlayHistory(this.currentSong)
     },
     error() {
@@ -386,31 +394,44 @@ export default {
       }
       this.playingLyric = txt
     },
+    // 捕获起始滑动位置
     middleTouchStart(e) {
+      // 标记开始手势动作
       this.touch.initiated = true
+      // 缓存坐标位置对象
       const touch = e.touches[0]
+      // x轴起始位置
       this.touch.startX = touch.pageX
+      // y轴起始位置
       this.touch.startY = touch.pageY
     },
     middleTouchMove(e) {
       if (!this.touch.initiated) {
         return
       }
+      // 当前位移位置
       const touch = e.touches[0]
+      // x轴位移量
       const deltaX = touch.pageX - this.touch.startX
+      // y轴位移量
       const deltaY = touch.pageY - this.touch.startY
       // 如果滚动时，手指在Y轴方向大于X轴 什么也不做
       if (Math.abs(deltaY) > Math.abs(deltaX)) {
         return
       }
-
+      // 缓存需要左移的距离 如果是封面切换到歌词left=0,否则是屏幕宽度
       const left = this.currentShow === 'cd' ? 0 : -window.innerWidth
+      // 缓存已滑动的距离
       const offsetWidth = Math.min(0, Math.max(-window.innerWidth, left + deltaX))
-      // 记录歌词dom的初始位置
+      // 得到位移百分比
       this.touch.percent = Math.abs(offsetWidth / window.innerWidth)
+      // 歌词跟随移动
       this.$refs.lyricList.$el.style[transform] = `translate3d(${offsetWidth}px,0,0)`
+      // 不展示歌词过度时间
       this.$refs.lyricList.$el.style[transitionDuration] = 0
+      // 封面透明度跟随percent变化
       this.$refs.middleL.style.opacity = 1 - this.touch.percent
+      // 不展示封面过度时间
       this.$refs.middleL.style[transitionDuration] = 0
     },
     middleTouchEnd() {
@@ -418,6 +439,7 @@ export default {
       let opacity = 0
       // 从右向左 显示歌词
       if (this.currentShow === 'cd') {
+        // 左滑位移量大于10%才会切换
         if (this.touch.percent > 0.1) {
           offsetWidth = -window.innerWidth
           this.currentShow = 'lyric'
@@ -427,7 +449,7 @@ export default {
           opacity = 1
         }
       } else {
-        // 从左向右 隐藏歌词
+        // 右滑位移量取相反
         if (this.touch.percent < 0.9) {
           offsetWidth = 0
           this.currentShow = 'cd'

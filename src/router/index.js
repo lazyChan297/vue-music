@@ -3,7 +3,7 @@ import Router from 'vue-router'
 
 const Recommend = () => import('components/recommend/recommend')
 const Singer = () => import('components/singer/singer')
-const Search = () => import('components/recommend/recommend')
+const Search = () => import('components/search/search')
 const Rank = () => import('components/rank/rank')
 const SingerDetail = () => import('components/singer-detail/singer-detail')
 const Disc = () => import('components/disc/disc')

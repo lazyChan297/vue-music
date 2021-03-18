@@ -10,7 +10,7 @@
     <div class="bgImage" :style="bgStyle" ref="bgImage">
       <!-- 播放按钮 -->
       <div class="player" ref="player" @click="random">
-        <i class="icon-play" ><span>随机播放歌曲</span></i>
+        <span>随机播放歌曲</span>
       </div>
     </div>
     <!-- 滚动遮罩层 -->
@@ -153,12 +153,12 @@ export default {
     left: 0
     right: 0
     bottom: 0
-    background: #222
+    background: #fff
     .back
       position:absolute
       z-index:2
     .icon-back
-      color:#ffcd32
+      color: #31c27c
       display: inline-block
       margin: 11px 0 11px 12px
     .title
@@ -180,7 +180,7 @@ export default {
       background-size:cover
     .bgLayer
       height:100%
-      background:#222
+      background:#fff
     .wrapper.songList
       position:absolute
       padding:0 30px
@@ -200,13 +200,16 @@ export default {
       transform: translate3d(-50%,0,0)
       bottom: 20px
       font-size:14px
-      border: 1px solid #ffcd32
       padding:0 10px
-      height: 32px
+      height: 40px
+      width: 190px
       line-height: 32px
+      background-color: #22d59c;
+      text-align: center;
+      line-height: 40px;
       .icon-play
-        color:#ffcd32
+        color:#31c27c
         margin:0 5px
       span
-        margin-left:5px
+        color: #fff
 </style>
