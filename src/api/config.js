@@ -13,4 +13,4 @@ export const options = {
 export const ERR_OK = 0
 // 生产环境url
 // export const prodUrl = 'http://ustbhuangyi.com'
-export const prodUrl = 'http://lottery.72lsy.vip'
+export const prodUrl = 'http://music.72lsy.vip'
